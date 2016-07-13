@@ -19,5 +19,5 @@ class GroupSerializer(serializers.ModelSerializer):
 class BeerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Beer
-        resource_name = "beer"
+        resource_name = "beers"
         fields = '__all__'

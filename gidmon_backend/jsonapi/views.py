@@ -24,6 +24,3 @@ class GroupViewSet(viewsets.ModelViewSet):
 class BeerViewSet(viewsets.ModelViewSet):
     queryset = Beer.objects.all()
     serializer_class = BeerSerializer
-
-    def partial_update(self, request, pk=None):
-        return Response("Hej")

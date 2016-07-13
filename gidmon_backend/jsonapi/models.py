@@ -5,4 +5,4 @@ class Beer(models.Model):
     abv = models.IntegerField(default=0)
 
     class JSONAPIMeta:
-        resource_name = "users"
+        resource_name = "beers"
