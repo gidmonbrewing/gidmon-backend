@@ -6,3 +6,6 @@ class Beer(models.Model):
 
     class JSONAPIMeta:
         resource_name = "beers"
+
+class Recipe(models.Model):
+    beer = models.OneToOneField(Beer)

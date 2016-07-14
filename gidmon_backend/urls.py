@@ -24,6 +24,7 @@ router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'beers', views.BeerViewSet)
+router.register(r'recipes', views.RecipeViewSet)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),
