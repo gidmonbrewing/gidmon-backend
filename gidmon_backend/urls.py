@@ -27,8 +27,8 @@ router.register(r'beers', views.BeerViewSet)
 router.register(r'recipes', views.RecipeViewSet)
 
 urlpatterns = [
+    url(r'^api/token-auth', obtain_auth_token),
     url(r'^api/', include(router.urls)),
-    url(r'^api-token-auth', obtain_auth_token),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
 ]
