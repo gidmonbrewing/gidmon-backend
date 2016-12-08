@@ -19,3 +19,8 @@ You will need the following things properly installed on your computer.
 * `pip install django`
 * `pip install djangorestframework`
 * `pip install djangorestframework-jsonapi`
+
+## Running / Development
+
+manage.py runserver
+
