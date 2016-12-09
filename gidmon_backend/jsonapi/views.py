@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework.response import Response
-from gidmon_backend.jsonapi.serializers import UserSerializer, GroupSerializer, BeerSerializer, RecipeSerializer
-from gidmon_backend.jsonapi.models import Beer, Recipe
+from gidmon_backend.jsonapi.serializers import UserSerializer, GroupSerializer, BeerSerializer, RecipeSerializer, NewsItemSerializer, NewsCommentSerializer
+from gidmon_backend.jsonapi.models import Beer, Recipe, NewsItem, NewsComment
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -31,3 +31,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 #    def create(self, request):
 #        print(request.data);
+
+class NewsItemViewSet(viewsets.ModelViewSet):
+    queryset = NewsItem.objects.all()
+    serializer_class = NewsItemSerializer
+	
+class NewsCommentViewSet(viewsets.ModelViewSet):
+    queryset = NewsComment.objects.all()
+    serializer_class = NewsCommentSerializer

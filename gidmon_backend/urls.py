@@ -25,6 +25,8 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'beers', views.BeerViewSet)
 router.register(r'recipes', views.RecipeViewSet)
+router.register(r'news_items', views.NewsItemViewSet)
+router.register(r'news_comments', views.NewsCommentViewSet)
 
 urlpatterns = [
     url(r'^api/token-auth', obtain_auth_token),
