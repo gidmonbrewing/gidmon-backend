@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 
 class Beer(models.Model):
 	name = models.CharField(max_length=100)
+	description = models.TextField()
 	abv = models.IntegerField(default=0)
+	image_name = models.CharField(max_length=30)
+	untappd_url = models.CharField(max_length=100)
 
 	def __str__(self):
 		return self.name
