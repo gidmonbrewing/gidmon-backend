@@ -19,6 +19,7 @@ class Recipe(models.Model):
 		
 class NewsItem(models.Model):
 	title = models.CharField(max_length=100)
+	preamble = models.TextField()
 	content = models.TextField()
 	created = models.DateTimeField()
 	author = models.ForeignKey(User)
