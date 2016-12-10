@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
 		resource_name = "user"
-		fields = ('url', 'username', 'first_name', 'last_name', 'email', 'groups')
+		fields = ('url', 'username', 'first_name', 'last_name', 'email', 'groups', 'is_staff', 'is_superuser')
 
 class GroupSerializer(serializers.ModelSerializer):
 	class Meta:
