@@ -41,4 +41,4 @@ class NewsItemSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = NewsItem
 		resource_name = "news_items"
-		fields = ('title', 'content', 'author', 'comments')
+		fields = ('title', 'preamble', 'content', 'created', 'author', 'comments')
