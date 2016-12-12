@@ -46,6 +46,13 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Visual Studio
+.vs
+bin
+obj
+web.config
+web.debug.config
+
 # Custom
 db.sqlite3
 *.pyc
