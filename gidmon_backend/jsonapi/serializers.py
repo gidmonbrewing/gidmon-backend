@@ -28,10 +28,14 @@ class RecipeSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 		
 class NewsCommentSerializer(serializers.ModelSerializer):
+	included_serializers = {
+		'author': UserSerializer,
+	}
 	class Meta:
 		model = NewsComment
 		resource_name = "news_comments"
-		fields = '__all__'
+		fields = ('content', 'children', 'author')
+		read_only_fields = ('children', 'author')
 		
 class NewsItemSerializer(serializers.ModelSerializer):
 	included_serializers = {
@@ -42,3 +46,4 @@ class NewsItemSerializer(serializers.ModelSerializer):
 		model = NewsItem
 		resource_name = "news_items"
 		fields = ('title', 'preamble', 'content', 'created', 'author', 'comments')
+		read_only_fields = ('author', 'comments')

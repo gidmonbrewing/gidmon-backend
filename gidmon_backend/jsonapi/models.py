@@ -32,7 +32,9 @@ class NewsItem(models.Model):
 		
 class NewsComment(models.Model):
 	news_item = models.ForeignKey(NewsItem, related_name='comments')
+	parent = models.ForeignKey('self', related_name='children', null=True) 
 	content = models.TextField()
+	author = models.ForeignKey(User)
 
 	def __str__(self):
 		return 'Comment on: %s' % self.news_item.title
