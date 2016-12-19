@@ -42,3 +42,6 @@ class NewsItemViewSet(viewsets.ModelViewSet):
 class NewsCommentViewSet(viewsets.ModelViewSet):
 	queryset = NewsComment.objects.all()
 	serializer_class = NewsCommentSerializer
+
+	def perform_create(self, serializer):
+		serializer.save(author=self.request.user)

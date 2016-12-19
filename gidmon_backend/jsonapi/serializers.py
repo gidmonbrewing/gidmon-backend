@@ -34,7 +34,7 @@ class NewsCommentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = NewsComment
 		resource_name = "news_comments"
-		fields = ('content', 'children', 'author')
+		fields = ('content', 'children', 'author', 'news_item')
 		read_only_fields = ('children', 'author')
 		
 class NewsItemSerializer(serializers.ModelSerializer):
