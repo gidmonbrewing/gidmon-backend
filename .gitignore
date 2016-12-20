@@ -57,3 +57,4 @@ web.debug.config
 db.sqlite3
 *.pyc
 env
+upload

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework_json_api import serializers
 #from rest_framework_json_api import serializers
-from gidmon_backend.jsonapi.models import Beer, Recipe, NewsItem, NewsComment
+from gidmon_backend.jsonapi.models import Beer, Recipe, NewsItem, NewsComment, Profile
 
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -14,6 +14,13 @@ class GroupSerializer(serializers.ModelSerializer):
 		model = Group
 		resource_name = "group"
 		fields = ('url', 'name')
+
+class ProfileSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Profile
+		resource_name = "profiles"
+		fields = '__all__'
+		read_only_fields = ('user', 'picture')
 
 class BeerSerializer(serializers.ModelSerializer):
 	class Meta:

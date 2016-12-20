@@ -18,6 +18,8 @@ from django.contrib import admin
 from rest_framework import routers
 from gidmon_backend.jsonapi import views
 from rest_framework.authtoken.views import obtain_auth_token
+from django.conf.urls.static import static
+from django.conf import settings
 
 router = routers.DefaultRouter(trailing_slash=False)
 #router = routers.DefaultRouter()
@@ -27,10 +29,12 @@ router.register(r'beers', views.BeerViewSet)
 router.register(r'recipes', views.RecipeViewSet)
 router.register(r'news_items', views.NewsItemViewSet)
 router.register(r'news_comments', views.NewsCommentViewSet)
+router.register(r'profiles', views.ProfileViewSet)
 
 urlpatterns = [
     url(r'^api/token-auth', obtain_auth_token),
+	url(r'^api/profile_picture', views.ProfilePictureView.as_view()),
     url(r'^api/', include(router.urls)),
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

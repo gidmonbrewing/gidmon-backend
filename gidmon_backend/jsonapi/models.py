@@ -44,3 +44,10 @@ class NewsComment(models.Model):
 
 	class JSONAPIMeta:
 		resource_name = "news_comments"
+
+class Profile(models.Model):
+	user = models.ForeignKey(User)
+	picture = models.ImageField(upload_to='profile_picture')
+
+	def __str__(self):
+		return 'Profile for: %s' % self.user.username

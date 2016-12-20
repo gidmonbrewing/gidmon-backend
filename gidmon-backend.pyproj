@@ -17,7 +17,7 @@
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <LaunchProvider>Django launcher</LaunchProvider>
-    <DjangoSettingsModule>gidmon_backend.settings</DjangoSettingsModule>
+    <DjangoSettingsModule>gidmon_backend.settings_development</DjangoSettingsModule>
     <OutputPath>.</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -47,6 +47,7 @@
     <Compile Include="gidmon_backend\jsonapi\tests.py" />
     <Compile Include="gidmon_backend\jsonapi\views.py" />
     <Compile Include="gidmon_backend\jsonapi\__init__.py" />
+    <Compile Include="gidmon_backend\settings_development.py" />
     <Compile Include="manage.py" />
     <Compile Include="gidmon_backend\__init__.py" />
     <Compile Include="gidmon_backend\settings.py" />
