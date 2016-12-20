@@ -28,15 +28,20 @@ class ProfileViewSet(viewsets.ModelViewSet):
 	serializer_class = ProfileSerializer
 
 class ProfilePictureView(views.APIView):
+	# Not sure if there are actually needed since they are already specified in settings.py
 	parser_classes = (MultiPartParser, FormParser)
 
 	def post(self, request, *args, **kwargs):
 		if 'file' in request.data:
 			upload = request.data['file']
+			# request.user will be set to the current user by TokenAuthenticator
 			profile = Profile.objects.get(user=request.user)
+			# We do not want to call delete if no picture is set.
+			# ImageField(picture) will return false when it's not set.
 			if profile.picture:
 				profile.picture.delete()
 
+			# We extract the extension of the uploaded picture and use it together with the username
 			filename, file_extension = os.path.splitext(upload.name)
 			picture_name = request.user.username + file_extension
 			profile.picture.save(picture_name, upload)
