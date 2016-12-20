@@ -7,7 +7,8 @@ class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
 		resource_name = "user"
-		fields = ('url', 'username', 'first_name', 'last_name', 'email', 'groups', 'is_staff', 'is_superuser')
+		fields = ('url', 'username', 'first_name', 'last_name', 'email', 'groups', 'is_staff', 'is_superuser', 'profile')
+		read_only_fields = ('profile',)
 
 class GroupSerializer(serializers.ModelSerializer):
 	class Meta:

@@ -6,7 +6,9 @@ from gidmon_backend.jsonapi.serializers import UserSerializer, GroupSerializer, 
 from gidmon_backend.jsonapi.models import Beer, Recipe, NewsItem, NewsComment, Profile
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
+from rest_framework.settings import api_settings
 import os
+import time
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -43,9 +45,11 @@ class ProfilePictureView(views.APIView):
 
 			# We extract the extension of the uploaded picture and use it together with the username
 			filename, file_extension = os.path.splitext(upload.name)
-			picture_name = request.user.username + file_extension
+			picture_name = '%s_%i%s' % (request.user.username, int(time.time()), file_extension)
 			profile.picture.save(picture_name, upload)
-			return Response(status=status.HTTP_201_CREATED, headers={'Location': picture_name})
+			serializer = ProfileSerializer(profile)
+			headers = {'Location': serializer.data["picture"]}
+			return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 		else:
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 

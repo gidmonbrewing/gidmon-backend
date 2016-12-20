@@ -46,7 +46,7 @@ class NewsComment(models.Model):
 		resource_name = "news_comments"
 
 class Profile(models.Model):
-	user = models.ForeignKey(User)
+	user = models.OneToOneField(User, related_name='profile')
 	picture = models.ImageField(upload_to='profile_picture')
 
 	def __str__(self):
