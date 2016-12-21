@@ -7,6 +7,7 @@ from gidmon_backend.jsonapi.models import Beer, Recipe, NewsItem, NewsComment, P
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
 from rest_framework.settings import api_settings
+from rest_framework.decorators import detail_route
 import os
 import time
 
@@ -28,6 +29,34 @@ class GroupViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(viewsets.ModelViewSet):
 	queryset = Profile.objects.all()
 	serializer_class = ProfileSerializer
+
+	@detail_route(methods=['post'])
+	def set_picture(self, request, pk=None):
+		if 'file' in request.data:
+			upload = request.data['file']
+
+			# request.user will be set to the current user by TokenAuthenticator
+			profile = self.get_object()
+
+			# Only admins can change other users picture
+			if profile.user != request.user:
+				if not request.user.is_staff:
+					return Response({ "detail": "Only admins can change other users profile picture" }, status=status.HTTP_403_FORBIDDEN);
+
+			# We do not want to call delete if no picture is set.
+			# ImageField(picture) will return false when it's not set.
+			if profile.picture:
+				profile.picture.delete()
+
+			# We extract the extension of the uploaded picture and use it together with the username
+			filename, file_extension = os.path.splitext(upload.name)
+			picture_name = '%s_%i%s' % (profile.user.username, int(time.time()), file_extension)
+			profile.picture.save(picture_name, upload)
+			serializer = self.get_serializer(profile)
+			headers = self.get_success_headers(serializer.data)
+			return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+		else:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class ProfilePictureView(views.APIView):
 	# Not sure if there are actually needed since they are already specified in settings.py
