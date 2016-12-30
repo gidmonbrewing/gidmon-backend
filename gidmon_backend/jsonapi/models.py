@@ -67,6 +67,9 @@ class Yeast(models.Model):
 	def __str__(self):
 		return self.name
 
+	class JSONAPIMeta:
+		resource_name = "yeasts"
+	
 class MiscIngredient(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
@@ -142,6 +145,9 @@ class BeerBatch(models.Model):
 	untappd_url = models.CharField(max_length=100)
 	session = models.OneToOneField(BrewingSession, related_name='beer_batch');
 
+	def __str__(self):
+		return u'Beer Batch: %s' % (self.name)
+
 class HopsRecipeEntry(models.Model):
 	recipe = models.ForeignKey(Recipe, related_name='hops_entries')
 	hops = models.ForeignKey(Hops)
@@ -149,7 +155,7 @@ class HopsRecipeEntry(models.Model):
 	add_time = models.IntegerField(default=0)
 
 	def __str__(self):
-		return u'%s: %s %d g, %d min' % (self.recipe.beer.name, self.hops.name, self.amount, self.add_time)
+		return u'Recipe Entry: %s' % (self.hops.name)
 
 class MaltRecipeEntry(models.Model):
 	recipe = models.ForeignKey(Recipe, related_name='malt_entries')
@@ -157,7 +163,7 @@ class MaltRecipeEntry(models.Model):
 	amount = models.DecimalField(max_digits=4, decimal_places=1, default=0)
 	
 	def __str__(self):
-		return u'%s: %s %f g' % (self.recipe.beer.name, self.malt.name, self.amount)
+		return u'Recipe Entry: %s' % (self.malt.name)
 
 class MiscIngredientEntry(models.Model):
 	recipe = models.ForeignKey(Recipe, related_name='misc_entries')
@@ -166,7 +172,7 @@ class MiscIngredientEntry(models.Model):
 	add_time = models.IntegerField(default=0)
 
 	def __str__(self):
-		return u'%s: %s %d g, %d min' % (self.recipe.beer.name, self.ingredient.name, self.amount, self.add_time)
+		return u'Recipe Entry: %s' % (self.ingredient.name)
 		
 class NewsItem(models.Model):
 	title = models.CharField(max_length=100)
