@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, views
 from rest_framework.response import Response
-from gidmon_backend.jsonapi.serializers import UserSerializer, GroupSerializer, BeerSerializer, RecipeSerializer, NewsItemSerializer, NewsCommentSerializer, ProfileSerializer
-from gidmon_backend.jsonapi.models import Beer, Recipe, NewsItem, NewsComment, Profile
+from gidmon_backend.jsonapi import serializers
+from gidmon_backend.jsonapi import models
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
 from rest_framework.settings import api_settings
@@ -17,18 +17,18 @@ class UserViewSet(viewsets.ModelViewSet):
 	API endpoint that allows users to be viewed or edited.
 	"""
 	queryset = User.objects.all().order_by('-date_joined')
-	serializer_class = UserSerializer
+	serializer_class = serializers.UserSerializer
 
 class GroupViewSet(viewsets.ModelViewSet):
 	"""
 	API endpoint that allows groups to be viewed or edited.
 	"""
 	queryset = Group.objects.all()
-	serializer_class = GroupSerializer
+	serializer_class = serializers.GroupSerializer
 
 class ProfileViewSet(viewsets.ModelViewSet):
-	queryset = Profile.objects.all()
-	serializer_class = ProfileSerializer
+	queryset = models.Profile.objects.all()
+	serializer_class = serializers.ProfileSerializer
 
 	@detail_route(methods=['post'])
 	def set_picture(self, request, pk=None):
@@ -59,26 +59,30 @@ class ProfileViewSet(viewsets.ModelViewSet):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class BeerViewSet(viewsets.ModelViewSet):
-	queryset = Beer.objects.all()
-	serializer_class = BeerSerializer
+	queryset = models.Beer.objects.all()
+	serializer_class = serializers.BeerSerializer
 
 class RecipeViewSet(viewsets.ModelViewSet):
-	queryset = Recipe.objects.all()
-	serializer_class = RecipeSerializer
+	queryset = models.Recipe.objects.all()
+	serializer_class = serializers.RecipeSerializer
 
 #    def create(self, request):
 #        print(request.data);
 
+class MaltRecipeEntryViewSet(viewsets.ModelViewSet):
+	queryset = models.MaltRecipeEntry.objects.all()
+	serializer_class = serializers.MaltRecipeEntrySerializer
+
 class NewsItemViewSet(viewsets.ModelViewSet):
-	queryset = NewsItem.objects.all()
-	serializer_class = NewsItemSerializer
+	queryset = models.NewsItem.objects.all()
+	serializer_class = serializers.NewsItemSerializer
 
 	def perform_create(self, serializer):
 		serializer.save(author=self.request.user)
 	
 class NewsCommentViewSet(viewsets.ModelViewSet):
-	queryset = NewsComment.objects.all()
-	serializer_class = NewsCommentSerializer
+	queryset = models.NewsComment.objects.all()
+	serializer_class = serializers.NewsCommentSerializer
 
 	def perform_create(self, serializer):
 		serializer.save(author=self.request.user)
