@@ -30,6 +30,7 @@ router.register(r'news_items', views.NewsItemViewSet)
 router.register(r'news_comments', views.NewsCommentViewSet)
 router.register(r'profiles', views.ProfileViewSet)
 router.register(r'malt_recipe_entries', views.MaltRecipeEntryViewSet)
+router.register(r'malts', views.MaltViewSet)
 
 urlpatterns = [
 	url(r'^api/token-auth', obtain_auth_token),

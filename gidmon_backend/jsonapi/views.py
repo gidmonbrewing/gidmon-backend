@@ -58,6 +58,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
 		else:
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 
+class MaltViewSet(viewsets.ModelViewSet):
+	queryset = models.Malt.objects.all()
+	serializer_class = serializers.MaltSerializer
+
 class BeerViewSet(viewsets.ModelViewSet):
 	queryset = models.Beer.objects.all()
 	serializer_class = serializers.BeerSerializer
