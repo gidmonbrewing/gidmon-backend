@@ -126,6 +126,7 @@ class Recipe(models.Model):
 class BrewingSession(models.Model):
 	date = models.DateTimeField();
 	recipe = models.ForeignKey(Recipe, related_name='sessions');
+	brewing_system = models.ForeignKey(BrewingSystem)
 	strike_water_temp = models.IntegerField(u"measured strike water temperature", default=0)
 	strike_water_volume = models.IntegerField(u"measured strike water volume", default=0)
 	sparge_water_temp = models.IntegerField(u"measured sparge water temperature", default=0)

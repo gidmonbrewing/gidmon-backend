@@ -62,6 +62,10 @@ class MaltViewSet(viewsets.ModelViewSet):
 	queryset = models.Malt.objects.all()
 	serializer_class = serializers.MaltSerializer
 
+class YeastViewSet(viewsets.ModelViewSet):
+	queryset = models.Yeast.objects.all()
+	serializer_class = serializers.YeastSerializer
+
 class BeerViewSet(viewsets.ModelViewSet):
 	queryset = models.Beer.objects.all()
 	serializer_class = serializers.BeerSerializer
