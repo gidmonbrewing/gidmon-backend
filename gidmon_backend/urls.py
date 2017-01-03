@@ -29,8 +29,8 @@ router.register(r'recipes', views.RecipeViewSet)
 router.register(r'news_items', views.NewsItemViewSet)
 router.register(r'news_comments', views.NewsCommentViewSet)
 router.register(r'profiles', views.ProfileViewSet)
-router.register(r'malt_recipe_entries', views.MaltRecipeEntryViewSet)
-router.register(r'malts', views.MaltViewSet)
+router.register(r'mash_recipe_entries', views.MashRecipeEntryViewSet)
+router.register(r'mash_ingredients', views.MashIngredientViewSet)
 router.register(r'yeasts', views.YeastViewSet)
 
 urlpatterns = [

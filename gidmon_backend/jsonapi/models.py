@@ -9,20 +9,21 @@ class BrewingSystem(models.Model):
 	conversion_efficiency = models.IntegerField(u"conversion efficiency (%)", default=100)
 	lauter_efficiency = models.IntegerField(u"lautering efficienct (%)", default=100)
 
-class Hops(models.Model):
+class BoilIngredient(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
 	alpha = models.DecimalField(max_digits=6, decimal_places=2, default=0)
-	HOPS_TYPES = (
+	INGREDIENT_TYPES = (
 		(u'cones', u'Cones'),
 		(u'pellets', u'Pellets'),
+		(u'other', u'Other'),
 	)
-	hops_type = models.CharField(max_length=10, choices=HOPS_TYPES, default='cones')
+	ingredient_type = models.CharField(max_length=10, choices=INGREDIENT_TYPES, default='cones')
 
 	def __str__(self):
 		return u'%s, %f.2%%' % (self.name, self.alpha)
 
-class MaltType(models.Model):
+class MashIngredientType(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
 	extract_potential = models.IntegerField(default=0)
@@ -30,14 +31,14 @@ class MaltType(models.Model):
 	def __str__(self):
 		return self.name
 
-class Malt(models.Model):
+class MashIngredient(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
 	ebc = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 	dbfg = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 	mc = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 	protein = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-	malt_type = models.ForeignKey(MaltType)
+	ingredient_type = models.ForeignKey(MashIngredientType)
 
 	def __str__(self):
 		return self.name
@@ -69,13 +70,6 @@ class Yeast(models.Model):
 
 	class JSONAPIMeta:
 		resource_name = "yeasts"
-	
-class MiscIngredient(models.Model):
-	name = models.CharField(max_length=100)
-	description = models.TextField(blank=True, null=True)
-	
-	def __str__(self):
-		return self.name
 
 class BeerType(models.Model):
 	name = models.CharField(max_length=100)
@@ -149,29 +143,20 @@ class BeerBatch(models.Model):
 	def __str__(self):
 		return u'Beer Batch: %s' % (self.name)
 
-class HopsRecipeEntry(models.Model):
-	recipe = models.ForeignKey(Recipe, related_name='hops_entries')
-	hops = models.ForeignKey(Hops)
+class BoilRecipeEntry(models.Model):
+	recipe = models.ForeignKey(Recipe, related_name='boil_entries')
+	ingredient = models.ForeignKey(BoilIngredient)
 	amount = models.IntegerField(default=0)
 	add_time = models.IntegerField(default=0)
 
 	def __str__(self):
-		return u'Recipe Entry: %s' % (self.hops.name)
+		return u'Recipe Entry: %s' % (self.ingredient.name)
 
-class MaltRecipeEntry(models.Model):
-	recipe = models.ForeignKey(Recipe, related_name='malt_entries')
-	malt = models.ForeignKey(Malt)
-	amount = models.DecimalField(max_digits=4, decimal_places=1, default=0)
+class MashRecipeEntry(models.Model):
+	recipe = models.ForeignKey(Recipe, related_name='mash_entries')
+	ingredient = models.ForeignKey(MashIngredient)
+	amount = models.DecimalField(max_digits=5, decimal_places=3, default=0)
 	
-	def __str__(self):
-		return u'Recipe Entry: %s' % (self.malt.name)
-
-class MiscIngredientEntry(models.Model):
-	recipe = models.ForeignKey(Recipe, related_name='misc_entries')
-	ingredient = models.ForeignKey(MiscIngredient)
-	amount = models.IntegerField(default=0)
-	add_time = models.IntegerField(default=0)
-
 	def __str__(self):
 		return u'Recipe Entry: %s' % (self.ingredient.name)
 		

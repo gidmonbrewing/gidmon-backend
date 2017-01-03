@@ -58,9 +58,9 @@ class ProfileViewSet(viewsets.ModelViewSet):
 		else:
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 
-class MaltViewSet(viewsets.ModelViewSet):
-	queryset = models.Malt.objects.all()
-	serializer_class = serializers.MaltSerializer
+class MashIngredientViewSet(viewsets.ModelViewSet):
+	queryset = models.MashIngredient.objects.all()
+	serializer_class = serializers.MashIngredientSerializer
 
 class YeastViewSet(viewsets.ModelViewSet):
 	queryset = models.Yeast.objects.all()
@@ -77,9 +77,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 #    def create(self, request):
 #        print(request.data);
 
-class MaltRecipeEntryViewSet(viewsets.ModelViewSet):
-	queryset = models.MaltRecipeEntry.objects.all()
-	serializer_class = serializers.MaltRecipeEntrySerializer
+class MashRecipeEntryViewSet(viewsets.ModelViewSet):
+	queryset = models.MashRecipeEntry.objects.all()
+	serializer_class = serializers.MashRecipeEntrySerializer
 
 class NewsItemViewSet(viewsets.ModelViewSet):
 	queryset = models.NewsItem.objects.all()

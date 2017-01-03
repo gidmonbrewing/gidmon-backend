@@ -29,34 +29,28 @@ class BrewingSystemSerializer(serializers.ModelSerializer):
 		resource_name = "brewing_systems"
 		fields = '__all__'
 
-class HopsSerializer(serializers.ModelSerializer):
+class BoilIngredientSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = models.Hops
-		resource_name = "hops"
+		model = models.BoilIngredient
+		resource_name = "boil_ingredients"
 		fields = '__all__'
 
-class MaltTypeSerializer(serializers.ModelSerializer):
+class MashIngredientTypeSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = models.MaltType
-		resource_name = "malt_types"
+		model = models.MashIngredientType
+		resource_name = "mash_ingredient_types"
 		fields = '__all__'
 
-class MaltSerializer(serializers.ModelSerializer):
+class MashIngredientSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = models.Malt
-		resource_name = "malts"
+		model = models.MashIngredient
+		resource_name = "mash_ingredients"
 		fields = '__all__'
 
 class YeastSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Yeast
 		resource_name = "yeasts"
-		fields = '__all__'
-
-class MiscIngredientSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = models.MiscIngredient
-		resource_name = "misc_ingredients"
 		fields = '__all__'
 
 class BeerTypeSerializer(serializers.ModelSerializer):
@@ -80,8 +74,8 @@ class RecipeSerializer(serializers.ModelSerializer):
 		resource_name = "recipes"
 		fields = ('beer', 'creator', 'mashing_temp', 'mashing_time', 'mash_out_temp', 'mash_out_time', 'sparge_count', 'sparge_water_temp', 
 			'pre_boil_volume', 'primary_fermentation_temp', 'primary_fermentation_time', 'yeast', 'yeast_amount', 'target_pitch_rate',
-			'hops_entries', 'malt_entries', 'misc_entries')
-		read_only_fields = ('beer', 'creator', 'hops_entries', 'malt_entries', 'misc_entries')
+			'boil_entries', 'mash_entries')
+		read_only_fields = ('beer', 'creator', 'boil_entries', 'mash_entries')
 
 class BrewingSessionSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -95,22 +89,16 @@ class BeerBatchSerializer(serializers.ModelSerializer):
 		resource_name = "beer_batches"
 		fields = '__all__'
 
-class HopeRecipeEntrySerializer(serializers.ModelSerializer):
+class BoilRecipeEntrySerializer(serializers.ModelSerializer):
 	class Meta:
-		model = models.HopsRecipeEntry
-		resource_name = "hops_recipe_entries"
+		model = models.BoilRecipeEntry
+		resource_name = "boil_recipe_entries"
 		fields = '__all__'
 
-class MaltRecipeEntrySerializer(serializers.ModelSerializer):
+class MashRecipeEntrySerializer(serializers.ModelSerializer):
 	class Meta:
-		model = models.MaltRecipeEntry
-		resource_name = "malt_recipe_entries"
-		fields = '__all__'
-
-class MiscIngredientEntrySerializer(serializers.ModelSerializer):
-	class Meta:
-		model = models.MiscIngredientEntry
-		resource_name = "misc_ingredient_entries"
+		model = models.MashRecipeEntry
+		resource_name = "mash_recipe_entries"
 		fields = '__all__'
 		
 class NewsCommentSerializer(serializers.ModelSerializer):
