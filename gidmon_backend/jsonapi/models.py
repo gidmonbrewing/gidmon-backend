@@ -27,6 +27,7 @@ class MashIngredientType(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
 	extract_potential = models.IntegerField(default=0)
+	is_malt = models.BooleanField(default=True)
 
 	def __str__(self):
 		return self.name
@@ -93,15 +94,16 @@ class Beer(models.Model):
 class Recipe(models.Model):
 	beer = models.OneToOneField(Beer, related_name='recipe')
 	creator = models.ForeignKey(User)
-	mashing_temp = models.IntegerField(u"mashing temperature", default=0)
-	mashing_time = models.IntegerField(u"mashing time", default=0)
-	mash_out_temp = models.IntegerField(u"mash out temperature", default=0)
-	mash_out_time = models.IntegerField(u"mash out time", default=0)
+	mashing_temp = models.IntegerField(u"mashing temperature", default=65)
+	mashing_time = models.IntegerField(u"mashing time", default=60)
+	mash_out_temp = models.IntegerField(u"mash out temperature", default=75)
+	mash_out_time = models.IntegerField(u"mash out time", default=20)
 	sparge_count = models.IntegerField(u"number of sparges", default=1)
-	sparge_water_temp = models.IntegerField(u"sparge water temperature", default=0)
-	pre_boil_volume = models.DecimalField(u"pre boil volume", max_digits=4, decimal_places=2, default=0)
-	primary_fermentation_temp = models.IntegerField(u"primary fermentation temp (C)", default=0)
-	primary_fermentation_time = models.IntegerField(u"primary fermentation time (days)", default=0)
+	sparge_water_temp = models.IntegerField(u"sparge water temperature", default=73)
+	pre_boil_volume = models.DecimalField(u"pre boil volume", max_digits=4, decimal_places=2, default=20)
+	total_malt_weight = models.DecimalField(u"total malt weight", max_digits=4, decimal_places=1, default=5)
+	primary_fermentation_temp = models.IntegerField(u"primary fermentation temp (C)", default=18)
+	primary_fermentation_time = models.IntegerField(u"primary fermentation time (days)", default=14)
 	yeast = models.ForeignKey(Yeast)
 	yeast_amount = models.DecimalField(u"amount of yeast (g)", max_digits=4, decimal_places=1, default=0)
 	TARGET_PITCH_TYPE = (
@@ -150,15 +152,15 @@ class BoilRecipeEntry(models.Model):
 	add_time = models.IntegerField(default=0)
 
 	def __str__(self):
-		return u'Recipe Entry: %s' % (self.ingredient.name)
+		return u'Recipe Entry: %s, %s' % (self.recipe.beer.name, self.ingredient.name)
 
 class MashRecipeEntry(models.Model):
 	recipe = models.ForeignKey(Recipe, related_name='mash_entries')
 	ingredient = models.ForeignKey(MashIngredient)
-	amount = models.DecimalField(max_digits=5, decimal_places=3, default=0)
+	amount = models.DecimalField(u'amount of malt in %', max_digits=4, decimal_places=1, default=0)
 	
 	def __str__(self):
-		return u'Recipe Entry: %s' % (self.ingredient.name)
+		return u'Recipe Entry: %s, %s' % (self.recipe.beer.name, self.ingredient.name)
 		
 class NewsItem(models.Model):
 	title = models.CharField(max_length=100)
