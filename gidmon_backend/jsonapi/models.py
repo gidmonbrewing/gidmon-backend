@@ -5,7 +5,9 @@ from decimal import *
 class BrewingSystem(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
-	evaporation_rate = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+	evaporation_rate = models.DecimalField(u"evaporation rate in l/hour", max_digits=4, decimal_places=1, default=0)
+	transfer_loss = models.DecimalField(u"loss due to transfer to boiler", max_digits=4, decimal_places=1, default=0)
+	boiler_dead_space = models.DecimalField(u"dead space when transfering to fermentor", max_digits=4, decimal_places=1, default=0)
 	conversion_efficiency = models.IntegerField(u"conversion efficiency (%)", default=100)
 	lauter_efficiency = models.IntegerField(u"lautering efficienct (%)", default=100)
 
@@ -14,8 +16,8 @@ class BoilIngredient(models.Model):
 	description = models.TextField(blank=True, null=True)
 	alpha = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 	INGREDIENT_TYPES = (
-		(u'cones', u'Cones'),
-		(u'pellets', u'Pellets'),
+		(u'cones', u'Hops Cones'),
+		(u'pellets', u'Hops Pellets'),
 		(u'other', u'Other'),
 	)
 	ingredient_type = models.CharField(max_length=10, choices=INGREDIENT_TYPES, default='cones')
@@ -44,6 +46,10 @@ class MashIngredient(models.Model):
 	def __str__(self):
 		return self.name
 
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "mash_ingredients"
+
 class Yeast(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
@@ -69,6 +75,7 @@ class Yeast(models.Model):
 	def __str__(self):
 		return self.name
 
+	# Needed to serialize relations properly
 	class JSONAPIMeta:
 		resource_name = "yeasts"
 
@@ -88,6 +95,7 @@ class Beer(models.Model):
 	def __str__(self):
 		return self.name
 
+	# Needed to serialize relations properly
 	class JSONAPIMeta:
 		resource_name = "beers"
 
@@ -118,6 +126,10 @@ class Recipe(models.Model):
 
 	def __str__(self):
 		return 'Recipe: %s' % self.beer.name
+
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "recipes"
 
 class BrewingSession(models.Model):
 	date = models.DateTimeField();
@@ -172,6 +184,7 @@ class NewsItem(models.Model):
 	def __str__(self):
 		return self.title
 
+	# Needed to serialize relations properly
 	class JSONAPIMeta:
 		resource_name = "news_items"
 		
@@ -184,6 +197,7 @@ class NewsComment(models.Model):
 	def __str__(self):
 		return 'Comment on: %s' % self.news_item.title
 
+	# Needed to serialize relations properly
 	class JSONAPIMeta:
 		resource_name = "news_comments"
 
