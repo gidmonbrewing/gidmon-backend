@@ -109,6 +109,7 @@ class Recipe(models.Model):
 	sparge_count = models.IntegerField(u"number of sparges", default=1)
 	sparge_water_temp = models.IntegerField(u"sparge water temperature", default=73)
 	pre_boil_volume = models.DecimalField(u"pre boil volume", max_digits=4, decimal_places=2, default=20)
+	boil_time = models.IntegerField(u"time to boil in minutes", default=60)
 	total_malt_weight = models.DecimalField(u"total malt weight", max_digits=4, decimal_places=1, default=5)
 	primary_fermentation_temp = models.IntegerField(u"primary fermentation temp (C)", default=18)
 	primary_fermentation_time = models.IntegerField(u"primary fermentation time (days)", default=14)
@@ -160,8 +161,8 @@ class BeerBatch(models.Model):
 class BoilRecipeEntry(models.Model):
 	recipe = models.ForeignKey(Recipe, related_name='boil_entries')
 	ingredient = models.ForeignKey(BoilIngredient)
-	amount = models.IntegerField(default=0)
-	add_time = models.IntegerField(default=0)
+	amount = models.IntegerField(u'amount in grams', default=0)
+	add_time = models.IntegerField(u'time to add from start of boil', default=0)
 
 	def __str__(self):
 		return u'Recipe Entry: %s, %s' % (self.recipe.beer.name, self.ingredient.name)

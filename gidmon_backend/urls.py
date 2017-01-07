@@ -32,6 +32,9 @@ router.register(r'profiles', views.ProfileViewSet)
 router.register(r'mash_recipe_entries', views.MashRecipeEntryViewSet)
 router.register(r'mash_ingredients', views.MashIngredientViewSet)
 router.register(r'yeasts', views.YeastViewSet)
+router.register(r'boil_ingredients', views.BoilIngredientViewSet)
+router.register(r'boil_recipe_entries', views.BoilRecipeEntryViewSet)
+
 
 urlpatterns = [
 	url(r'^api/token-auth', obtain_auth_token),

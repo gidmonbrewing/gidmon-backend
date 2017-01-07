@@ -62,6 +62,10 @@ class MashIngredientViewSet(viewsets.ModelViewSet):
 	queryset = models.MashIngredient.objects.all()
 	serializer_class = serializers.MashIngredientSerializer
 
+class BoilIngredientViewSet(viewsets.ModelViewSet):
+	queryset = models.BoilIngredient.objects.all()
+	serializer_class = serializers.BoilIngredientSerializer
+
 class YeastViewSet(viewsets.ModelViewSet):
 	queryset = models.Yeast.objects.all()
 	serializer_class = serializers.YeastSerializer
@@ -80,6 +84,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
 class MashRecipeEntryViewSet(viewsets.ModelViewSet):
 	queryset = models.MashRecipeEntry.objects.all()
 	serializer_class = serializers.MashRecipeEntrySerializer
+
+class BoilRecipeEntryViewSet(viewsets.ModelViewSet):
+	queryset = models.BoilRecipeEntry.objects.all()
+	serializer_class = serializers.BoilRecipeEntrySerializer
 
 class NewsItemViewSet(viewsets.ModelViewSet):
 	queryset = models.NewsItem.objects.all()
