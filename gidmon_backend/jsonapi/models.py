@@ -63,7 +63,7 @@ class Yeast(models.Model):
 		(u'liquid', u'Liquid'),
 	)
 	yeast_type = models.CharField(max_length=10, choices=YEAST_TYPES, default='dry')
-	attenuation = models.DecimalField(max_digits=3, decimal_places=1, default=0)
+	attenuation = models.DecimalField(u"attenuation in %", max_digits=3, decimal_places=1, default=0)
 	cell_concentration = models.DecimalField(u"billion cells/g", max_digits=5, decimal_places=3, default=0)
 	FLOCCULATION_TYPES = (
 		(u'low', u'Low'),
