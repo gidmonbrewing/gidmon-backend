@@ -58,6 +58,10 @@ class ProfileViewSet(viewsets.ModelViewSet):
 		else:
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 
+class BrewingSystemViewSet(viewsets.ModelViewSet):
+	queryset = models.BrewingSystem.objects.all();
+	serializer_class = serializers.BrewingSystemSerializer
+
 class MashIngredientViewSet(viewsets.ModelViewSet):
 	queryset = models.MashIngredient.objects.all()
 	serializer_class = serializers.MashIngredientSerializer
@@ -80,6 +84,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 #    def create(self, request):
 #        print(request.data);
+
+class BrewingSessionViewSet(viewsets.ModelViewSet):
+	queryset = models.BrewingSession.objects.all()
+	serializer_class = serializers.BrewingSessionSerializer
 
 class MashRecipeEntryViewSet(viewsets.ModelViewSet):
 	queryset = models.MashRecipeEntry.objects.all()
