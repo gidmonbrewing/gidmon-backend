@@ -5,16 +5,24 @@ from decimal import *
 class BrewingSystem(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
-	evaporation_rate = models.DecimalField(u"evaporation rate in l/hour", max_digits=4, decimal_places=1, default=0)
+	boil_off_rate = models.DecimalField(u"evaporation rate in l/hour", max_digits=4, decimal_places=1, default=0)
 	transfer_loss = models.DecimalField(u"loss due to transfer to boiler", max_digits=4, decimal_places=1, default=0)
 	boiler_dead_space = models.DecimalField(u"dead space when transfering to fermentor", max_digits=4, decimal_places=1, default=0)
 	conversion_efficiency = models.IntegerField(u"conversion efficiency (%)", default=100)
-	lauter_efficiency = models.IntegerField(u"lautering efficienct (%)", default=100)
+	lauter_efficiency = models.IntegerField(u"lautering efficiency (%)", default=100)
+
+	def __str__(self):
+		return self.name
+
+# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "brewing_systems"
 
 class BoilIngredient(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
 	alpha = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+	extract = models.IntegerField(u"sugar content in %", default=0)
 	INGREDIENT_TYPES = (
 		(u'cones', u'Hops Cones'),
 		(u'pellets', u'Hops Pellets'),
@@ -109,6 +117,8 @@ class Recipe(models.Model):
 	sparge_count = models.IntegerField(u"number of sparges", default=1)
 	sparge_water_temp = models.IntegerField(u"sparge water temperature", default=73)
 	pre_boil_volume = models.DecimalField(u"pre boil volume", max_digits=4, decimal_places=2, default=20)
+	post_boil_volume = models.DecimalField(u"post boil volume", max_digits=4, decimal_places=2, default=15)
+	fermentation_volume = models.DecimalField(u"fermentation volume", max_digits=4, decimal_places=2, default=12)
 	boil_time = models.IntegerField(u"time to boil in minutes", default=60)
 	total_malt_weight = models.DecimalField(u"total malt weight", max_digits=4, decimal_places=1, default=5)
 	primary_fermentation_temp = models.IntegerField(u"primary fermentation temp (C)", default=18)
@@ -137,17 +147,20 @@ class BrewingSession(models.Model):
 	recipe = models.ForeignKey(Recipe, related_name='sessions')
 	brewing_system = models.ForeignKey(BrewingSystem, null=True)
 	strike_water_temp = models.IntegerField(u"measured strike water temperature", default=0)
-	strike_water_volume = models.IntegerField(u"measured strike water volume", default=0)
 	sparge_water_temp = models.IntegerField(u"measured sparge water temperature", default=0)
-	sparge_water_volume = models.IntegerField(u"measured sparge water volume", default=0)
 	pre_boil_volume = models.DecimalField(u"measured pre boil volume", max_digits=4, decimal_places=2, default=0)
 	post_boil_volume = models.DecimalField(u"measured post boil volume", max_digits=4, decimal_places=2, default=0)
 	fermentation_volume = models.DecimalField(u"volume in fermentation vessel", max_digits=4, decimal_places=2, default=0)
-	wort_rest_time = models.IntegerField(u"time to rest the wort", default=0)
-	yeast_amount = models.DecimalField(u"actual amount of yeast", max_digits=4, decimal_places=2, default=0)
+	measured_first_wort_sg = models.DecimalField(u"measured first wort sg", max_digits=4, decimal_places=3, default=1.000)
+	measured_first_sparge_sg = models.DecimalField(u"measured first sparge sg", max_digits=4, decimal_places=3, default=1.000)
+	measured_pre_boil_sg = models.DecimalField(u"measured pre boil sg", max_digits=4, decimal_places=3, default=1.000)
+	measured_og = models.DecimalField(u"measured og", max_digits=4, decimal_places=3, default=1.000)
+	measured_fg = models.DecimalField(u"measured fg", max_digits=4, decimal_places=3, default=1.000)
+	wort_settle_time = models.IntegerField(u"time to let the sediment settle in the wort", default=0)
+	yeast_used = models.DecimalField(u"amount of yeast used", max_digits=4, decimal_places=2, default=0)
 
 	def __str__(self):
-		return 'Session: %s' % self.beer.name
+		return 'Session: %s %s' % (self.recipe.beer.name, self.date)
 
 class BeerBatch(models.Model):
 	name = models.CharField(max_length=100)
