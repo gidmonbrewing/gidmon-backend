@@ -22,5 +22,5 @@ You will need the following things properly installed on your computer.
 
 ## Running / Development
 
-manage.py runserver
+manage.py runserver [--settings=gidmon_backend.settings_development]
 
