@@ -78,6 +78,10 @@ class BeerViewSet(viewsets.ModelViewSet):
 	queryset = models.Beer.objects.all()
 	serializer_class = serializers.BeerSerializer
 
+class PitchTypeViewSet(viewsets.ModelViewSet):
+	queryset = models.PitchType.objects.all()
+	serializer_class = serializers.PitchTypeSerializer
+
 class RecipeViewSet(viewsets.ModelViewSet):
 	queryset = models.Recipe.objects.all()
 	serializer_class = serializers.RecipeSerializer

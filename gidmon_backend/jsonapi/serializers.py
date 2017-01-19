@@ -65,16 +65,23 @@ class BeerSerializer(serializers.ModelSerializer):
 		resource_name = "beers"
 		fields = '__all__'
 
+class PitchTypeSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = models.PitchType
+		resource_name = "pitch_types"
+		fields = '__all__'
+
 class RecipeSerializer(serializers.ModelSerializer):
 	included_serializers = {
 		'yeast': YeastSerializer,
+		'pitch_type': PitchTypeSerializer,
 	}
 	class Meta:
 		model = models.Recipe
 		resource_name = "recipes"
 		fields = ('beer', 'creator', 'mashing_temp', 'mashing_time', 'mash_out_temp', 'mash_out_time', 'sparge_count', 'sparge_water_temp', 
 			'pre_boil_volume', 'post_boil_volume', 'fermentation_volume', 'boil_time', 'total_malt_weight', 'primary_fermentation_temp', 
-			'primary_fermentation_time', 'yeast', 'yeast_amount', 'target_pitch_rate',
+			'primary_fermentation_time', 'yeast', 'yeast_amount', 'pitch_type',
 			'boil_entries', 'mash_entries', 'sessions')
 		read_only_fields = ('beer', 'creator', 'boil_entries', 'mash_entries', 'sessions')
 

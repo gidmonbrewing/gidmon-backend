@@ -36,7 +36,7 @@ router.register(r'boil_ingredients', views.BoilIngredientViewSet)
 router.register(r'boil_recipe_entries', views.BoilRecipeEntryViewSet)
 router.register(r'brewing_sessions', views.BrewingSessionViewSet)
 router.register(r'brewing_systems', views.BrewingSystemViewSet)
-
+router.register(r'pitch_types', views.PitchTypeViewSet)
 
 urlpatterns = [
 	url(r'^api/token-auth', obtain_auth_token),
