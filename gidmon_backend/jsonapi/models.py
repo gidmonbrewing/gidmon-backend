@@ -107,6 +107,17 @@ class Beer(models.Model):
 	class JSONAPIMeta:
 		resource_name = "beers"
 
+class PitchType(models.Model):
+	name = models.CharField(max_length=100)
+	pitch_rate = models.DecimalField(u"billion cells/l wort/plato", max_digits=6, decimal_places=2, default=1.0)
+
+	def __str__(self):
+		return self.name
+
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "pitch_types"
+
 class Recipe(models.Model):
 	beer = models.OneToOneField(Beer, related_name='recipe')
 	creator = models.ForeignKey(User)
@@ -123,17 +134,9 @@ class Recipe(models.Model):
 	total_malt_weight = models.DecimalField(u"total malt weight", max_digits=4, decimal_places=1, default=5)
 	primary_fermentation_temp = models.IntegerField(u"primary fermentation temp (C)", default=18)
 	primary_fermentation_time = models.IntegerField(u"primary fermentation time (days)", default=14)
-	yeast = models.ForeignKey(Yeast)
+	yeast = models.ForeignKey(Yeast, null=True)
 	yeast_amount = models.DecimalField(u"amount of yeast (g)", max_digits=4, decimal_places=1, default=0)
-	TARGET_PITCH_TYPE = (
-		(Decimal(0.35), u'Manufacturer'),
-		(Decimal(0.5), u'Manufacturer 1.060+'),
-		(Decimal(0.75), u'Ale'),
-		(Decimal(1.0), u'Ale 1.060+'),
-		(Decimal(1.5), u'Lager'),
-		(Decimal(2.0), u'Lager 1.060+'),
-	)
-	target_pitch_rate = models.DecimalField(max_digits=4, decimal_places=2, default=0.75, choices=TARGET_PITCH_TYPE)
+	pitch_type = models.ForeignKey(PitchType, null=True)
 
 	def __str__(self):
 		return 'Recipe: %s' % self.beer.name
