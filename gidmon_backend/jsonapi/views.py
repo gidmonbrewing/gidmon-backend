@@ -74,6 +74,10 @@ class YeastViewSet(viewsets.ModelViewSet):
 	queryset = models.Yeast.objects.all()
 	serializer_class = serializers.YeastSerializer
 
+class BeerTypeViewSet(viewsets.ModelViewSet):
+	queryset = models.BeerType.objects.all()
+	serializer_class = serializers.BeerTypeSerializer
+
 class BeerViewSet(viewsets.ModelViewSet):
 	queryset = models.Beer.objects.all()
 	serializer_class = serializers.BeerSerializer

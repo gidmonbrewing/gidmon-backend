@@ -90,6 +90,8 @@ class Yeast(models.Model):
 class BeerType(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
+	priming_co2_min = models.DecimalField(u"min CO2 for priming in g/l", max_digits=3, decimal_places=1, default=0)
+	priming_co2_max = models.DecimalField(u"max CO2 for priming in g/l", max_digits=3, decimal_places=1, default=0)
 	
 	def __str__(self):
 		return self.name
