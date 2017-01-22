@@ -167,6 +167,10 @@ class BrewingSession(models.Model):
 	def __str__(self):
 		return 'Session: %s %s' % (self.recipe.beer.name, self.date)
 
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "brewing_sessions"
+
 class BeerBatch(models.Model):
 	name = models.CharField(max_length=100)
 	abv = models.IntegerField(default=0)
@@ -180,10 +184,14 @@ class BoilRecipeEntry(models.Model):
 	recipe = models.ForeignKey(Recipe, related_name='boil_entries')
 	ingredient = models.ForeignKey(BoilIngredient)
 	amount = models.IntegerField(u'amount in grams', default=0)
-	add_time = models.IntegerField(u'time to add from start of boil', default=0)
+	boil_time = models.IntegerField(u'time to boil in mins', default=0)
 
 	def __str__(self):
-		return u'Recipe Entry: %s, %s' % (self.recipe.beer.name, self.ingredient.name)
+		return u'Recipe Entry: %s, %s, %s min' % (self.recipe.beer.name, self.ingredient.name, self.boil_time)
+
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "boil_recipe_entries"
 
 class MashRecipeEntry(models.Model):
 	recipe = models.ForeignKey(Recipe, related_name='mash_entries')
@@ -193,10 +201,21 @@ class MashRecipeEntry(models.Model):
 	def __str__(self):
 		return u'Recipe Entry: %s, %s' % (self.recipe.beer.name, self.ingredient.name)
 
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "mash_recipe_entries"
+
 class BoilSessionEntry(models.Model):
 	session = models.ForeignKey(BrewingSession, related_name='boil_entries')
 	recipe_entry = models.ForeignKey(BoilRecipeEntry)
 	alpha = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+
+	def __str__(self):
+		return u'Session Entry: %s, %s, %s min' % (self.session.recipe.beer.name, self.recipe_entry.ingredient.name, self.recipe_entry.boil_time)
+
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "boil_session_entries"
 
 class NewsItem(models.Model):
 	title = models.CharField(max_length=100)
