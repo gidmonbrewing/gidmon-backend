@@ -90,9 +90,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
 	queryset = models.Recipe.objects.all()
 	serializer_class = serializers.RecipeSerializer
 
-#    def create(self, request):
-#        print(request.data);
-
 class BrewingSessionViewSet(viewsets.ModelViewSet):
 	queryset = models.BrewingSession.objects.all()
 	serializer_class = serializers.BrewingSessionSerializer
@@ -104,6 +101,10 @@ class MashRecipeEntryViewSet(viewsets.ModelViewSet):
 class BoilRecipeEntryViewSet(viewsets.ModelViewSet):
 	queryset = models.BoilRecipeEntry.objects.all()
 	serializer_class = serializers.BoilRecipeEntrySerializer
+
+class BoilSessionEntryViewSet(viewsets.ModelViewSet):
+	queryset = models.BoilSessionEntry.objects.all()
+	serializer_class = serializers.BoilSessionEntrySerializer
 
 class NewsItemViewSet(viewsets.ModelViewSet):
 	queryset = models.NewsItem.objects.all()

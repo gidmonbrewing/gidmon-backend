@@ -192,7 +192,12 @@ class MashRecipeEntry(models.Model):
 	
 	def __str__(self):
 		return u'Recipe Entry: %s, %s' % (self.recipe.beer.name, self.ingredient.name)
-		
+
+class BoilSessionEntry(models.Model):
+	session = models.ForeignKey(BrewingSession, related_name='boil_entries')
+	recipe_entry = models.ForeignKey(BoilRecipeEntry)
+	alpha = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+
 class NewsItem(models.Model):
 	title = models.CharField(max_length=100)
 	preamble = models.TextField()

@@ -89,7 +89,10 @@ class BrewingSessionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.BrewingSession
 		resource_name = "brewing_sessions"
-		fields = '__all__'
+		fields = ('date', 'recipe', 'brewing_system', 'strike_water_temp', 'sparge_water_temp', 'pre_boil_volume', 'post_boil_volume',
+		'fermentation_volume', 'measured_first_wort_sg', 'measured_first_sparge_sg', 'measured_pre_boil_sg', 'measured_og', 'measured_fg',
+		'wort_settle_time', 'yeast_used', 'boil_entries')
+		read_only_fields = ('boil_entries',)
 
 class BeerBatchSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -108,7 +111,13 @@ class MashRecipeEntrySerializer(serializers.ModelSerializer):
 		model = models.MashRecipeEntry
 		resource_name = "mash_recipe_entries"
 		fields = '__all__'
-		
+
+class BoilSessionEntrySerializer(serializers.ModelSerializer):
+	class Meta:
+		model = models.BoilSessionEntry
+		resource_name = "boil_session_entries"
+		fields = '__all__'
+
 class NewsCommentSerializer(serializers.ModelSerializer):
 	included_serializers = {
 		'author': UserSerializer,
