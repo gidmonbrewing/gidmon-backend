@@ -136,9 +136,9 @@ class Recipe(models.Model):
 	total_malt_weight = models.DecimalField(u"total malt weight", max_digits=4, decimal_places=1, default=5)
 	primary_fermentation_temp = models.IntegerField(u"primary fermentation temp (C)", default=18)
 	primary_fermentation_time = models.IntegerField(u"primary fermentation time (days)", default=14)
-	yeast = models.ForeignKey(Yeast, null=True)
+	yeast = models.ForeignKey(Yeast, null=True, blank=True)
 	yeast_amount = models.DecimalField(u"amount of yeast (g)", max_digits=4, decimal_places=1, default=0)
-	pitch_type = models.ForeignKey(PitchType, null=True)
+	pitch_type = models.ForeignKey(PitchType, null=True, blank=True)
 
 	def __str__(self):
 		return 'Recipe: %s' % self.beer.name
@@ -170,6 +170,19 @@ class BrewingSession(models.Model):
 	# Needed to serialize relations properly
 	class JSONAPIMeta:
 		resource_name = "brewing_sessions"
+
+class BrewingSessionComment(models.Model):
+	brewing_session = models.ForeignKey(BrewingSession, related_name='comments')
+	parent = models.ForeignKey('self', related_name='children', null=True, blank=True) 
+	content = models.TextField()
+	author = models.ForeignKey(User)
+
+	def __str__(self):
+		return 'Comment on: %s %s' % (self.brewing_session.recipe.beer.name, self.brewing_session.date)
+
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "brewing_session_comments"
 
 class BeerBatch(models.Model):
 	name = models.CharField(max_length=100)

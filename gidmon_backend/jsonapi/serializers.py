@@ -85,14 +85,24 @@ class RecipeSerializer(serializers.ModelSerializer):
 			'boil_entries', 'mash_entries', 'sessions')
 		read_only_fields = ('beer', 'creator', 'boil_entries', 'mash_entries', 'sessions')
 
+class BrewingSessionCommentSerializer(serializers.ModelSerializer):
+	included_serializers = {
+		'author': UserSerializer,
+	}
+	class Meta:
+		model = models.BrewingSessionComment
+		resource_name = "brewing_session_comments"
+		fields = ('content', 'children', 'author', 'brewing_session')
+		read_only_fields = ('children', 'author')
+
 class BrewingSessionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.BrewingSession
 		resource_name = "brewing_sessions"
 		fields = ('date', 'recipe', 'brewing_system', 'strike_water_temp', 'sparge_water_temp', 'pre_boil_volume', 'post_boil_volume',
 		'fermentation_volume', 'measured_first_wort_sg', 'measured_first_sparge_sg', 'measured_pre_boil_sg', 'measured_og', 'measured_fg',
-		'wort_settle_time', 'yeast_used', 'boil_entries')
-		read_only_fields = ('boil_entries',)
+		'wort_settle_time', 'yeast_used', 'boil_entries', 'comments')
+		read_only_fields = ('boil_entries','comments')
 
 class BeerBatchSerializer(serializers.ModelSerializer):
 	class Meta:

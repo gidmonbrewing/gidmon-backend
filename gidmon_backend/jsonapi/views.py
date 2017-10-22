@@ -94,6 +94,13 @@ class BrewingSessionViewSet(viewsets.ModelViewSet):
 	queryset = models.BrewingSession.objects.all()
 	serializer_class = serializers.BrewingSessionSerializer
 
+class BrewingSessionCommentViewSet(viewsets.ModelViewSet):
+	queryset = models.BrewingSessionComment.objects.all()
+	serializer_class = serializers.BrewingSessionCommentSerializer
+
+	def perform_create(self, serializer):
+		serializer.save(author=self.request.user)
+
 class MashRecipeEntryViewSet(viewsets.ModelViewSet):
 	queryset = models.MashRecipeEntry.objects.all()
 	serializer_class = serializers.MashRecipeEntrySerializer
