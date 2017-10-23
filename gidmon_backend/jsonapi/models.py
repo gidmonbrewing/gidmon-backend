@@ -129,6 +129,7 @@ class Recipe(models.Model):
 	mash_out_time = models.IntegerField(u"mash out time", default=20)
 	sparge_count = models.IntegerField(u"number of sparges", default=1)
 	sparge_water_temp = models.IntegerField(u"sparge water temperature", default=73)
+	sparge_time = models.IntegerField(u"sparge time", default=20)
 	pre_boil_volume = models.DecimalField(u"pre boil volume", max_digits=4, decimal_places=2, default=20)
 	post_boil_volume = models.DecimalField(u"post boil volume", max_digits=4, decimal_places=2, default=15)
 	fermentation_volume = models.DecimalField(u"fermentation volume", max_digits=4, decimal_places=2, default=12)
