@@ -52,6 +52,6 @@ You will need the following things properly installed on your computer.
 * Change into the project directory
 * `git pull (--rebase)` (get latest version from git)
 * `source ../env/bin/activate` (activate virtual env created in parent directory)
-* `manage.py migrate` (apply database migrations from migration files that were pulled down)
+* `python manage.py migrate` (apply database migrations from migration files that were pulled down)
 * `deactivate` (deactivat virtual env)
 * `sudo systemctl start uwsgi` (start service again)
