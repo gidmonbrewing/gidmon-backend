@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
+from django.utils import timezone
 from rest_framework import viewsets, views
 from rest_framework.response import Response
 from gidmon_backend.jsonapi import serializers
@@ -8,6 +9,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
 from rest_framework.settings import api_settings
 from rest_framework.decorators import detail_route
+from rest_framework.authtoken.models import Token
 import os
 import time
 
@@ -57,6 +59,30 @@ class ProfileViewSet(viewsets.ModelViewSet):
 			return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 		else:
 			return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class OAuthLoginFB(views.APIView):
+	throttle_classes = ()
+	permission_classes = ()
+
+	def post(self, request, *args, **kwargs):
+		username = "fb_" + request.data['username']
+		email = request.data['email']
+		try:
+			user = User.objects.get(username = username, email = email)
+			user.last_login = timezone.now()
+			user.save(update_fields=['last_login'])
+		except User.DoesNotExist:
+			user = User.objects.create_user(username, email)
+			user.first_name = request.data['first_name']
+			user.last_name = request.data['last_name']
+			user.last_login = timezone.now()
+			user.save()
+			profile = models.Profile.objects.create(user=user)
+			profile.save()
+		token, created = Token.objects.get_or_create(user=user)
+		return Response({'token': token.key, 'userId': user.id})
+
+oauth_login_fb = OAuthLoginFB.as_view()
 
 class BrewingSystemViewSet(viewsets.ModelViewSet):
 	queryset = models.BrewingSystem.objects.all();

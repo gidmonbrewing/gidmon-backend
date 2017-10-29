@@ -12,6 +12,7 @@ You will need the following things properly installed on your computer.
 * [Django (1.7+, 1.8, 1.9)](https://www.djangoproject.com)
 * [Django REST framework](http://www.django-rest-framework.org)
 * [Django REST Framework JSON API](http://django-rest-framework-json-api.readthedocs.io/en/v2.0.1)
+* [Pillow] (https://python-pillow.org/)
 
 ## Installation
 
@@ -22,6 +23,7 @@ You will need the following things properly installed on your computer.
 * `pip install django`
 * `pip install djangorestframework`
 * `pip install djangorestframework-jsonapi`
+* `pip install pillow`
 * Optional: `deactivate` (leave virtual env)
 
 ## Getting Started

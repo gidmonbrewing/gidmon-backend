@@ -43,6 +43,7 @@ router.register(r'boil_session_entries', views.BoilSessionEntryViewSet)
 
 urlpatterns = [
 	url(r'^api/token-auth', obtain_auth_token),
+	url(r'^api/oauth-login-fb', views.oauth_login_fb),
 	url(r'^api/', include(router.urls)),
 	url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
