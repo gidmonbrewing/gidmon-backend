@@ -135,6 +135,10 @@ class BoilRecipeEntryViewSet(viewsets.ModelViewSet):
 	queryset = models.BoilRecipeEntry.objects.all()
 	serializer_class = serializers.BoilRecipeEntrySerializer
 
+class MashSessionEntryViewSet(viewsets.ModelViewSet):
+	queryset = models.MashSessionEntry.objects.all()
+	serializer_class = serializers.MashSessionEntrySerializer
+
 class BoilSessionEntryViewSet(viewsets.ModelViewSet):
 	queryset = models.BoilSessionEntry.objects.all()
 	serializer_class = serializers.BoilSessionEntrySerializer

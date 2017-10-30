@@ -130,6 +130,7 @@ class Recipe(models.Model):
 	sparge_count = models.IntegerField(u"number of sparges", default=1)
 	sparge_water_temp = models.IntegerField(u"sparge water temperature", default=73)
 	sparge_time = models.IntegerField(u"sparge time", default=20)
+	conversion_efficiency = models.IntegerField(u"the assumed conversion efficiency of brewing equipment", default=95)
 	pre_boil_volume = models.DecimalField(u"pre boil volume", max_digits=4, decimal_places=2, default=20)
 	post_boil_volume = models.DecimalField(u"post boil volume", max_digits=4, decimal_places=2, default=15)
 	fermentation_volume = models.DecimalField(u"fermentation volume", max_digits=4, decimal_places=2, default=12)
@@ -152,11 +153,17 @@ class BrewingSession(models.Model):
 	date = models.DateTimeField();
 	recipe = models.ForeignKey(Recipe, related_name='sessions')
 	brewing_system = models.ForeignKey(BrewingSystem, null=True)
+	strike_water_volume = models.DecimalField(u"scale adjusted strike water volume", max_digits=4, decimal_places=2, default=0)
 	strike_water_temp = models.IntegerField(u"measured strike water temperature", default=0)
+	sparge_water_volume = models.DecimalField(u"scale adjusted sparge water volume", max_digits=4, decimal_places=2, default=0)
 	sparge_water_temp = models.IntegerField(u"measured sparge water temperature", default=0)
-	pre_boil_volume = models.DecimalField(u"measured pre boil volume", max_digits=4, decimal_places=2, default=0)
-	post_boil_volume = models.DecimalField(u"measured post boil volume", max_digits=4, decimal_places=2, default=0)
-	fermentation_volume = models.DecimalField(u"volume in fermentation vessel", max_digits=4, decimal_places=2, default=0)
+	pre_boil_volume = models.DecimalField(u"scale adjusted pre boil volume", max_digits=4, decimal_places=2, default=0)
+	measured_pre_boil_volume = models.DecimalField(u"measured pre boil volume", max_digits=4, decimal_places=2, default=0)
+	post_boil_volume = models.DecimalField(u"scale adjusted post boil volume", max_digits=4, decimal_places=2, default=0)
+	measured_post_boil_volume = models.DecimalField(u"measured post boil volume", max_digits=4, decimal_places=2, default=0)
+	fermentation_volume = models.DecimalField(u"scale adjusted volume in fermentation vessel", max_digits=4, decimal_places=2, default=0)
+	measured_fermentation_volume = models.DecimalField(u"measured volume in fermentation vessel", max_digits=4, decimal_places=2, default=0)
+	boil_time = models.IntegerField(u"time to boil in minutes", default=60)
 	measured_first_wort_sg = models.DecimalField(u"measured first wort sg", max_digits=4, decimal_places=3, default=1.000)
 	measured_first_sparge_sg = models.DecimalField(u"measured first sparge sg", max_digits=4, decimal_places=3, default=1.000)
 	measured_pre_boil_sg = models.DecimalField(u"measured pre boil sg", max_digits=4, decimal_places=3, default=1.000)
@@ -222,6 +229,7 @@ class MashRecipeEntry(models.Model):
 class BoilSessionEntry(models.Model):
 	session = models.ForeignKey(BrewingSession, related_name='boil_entries')
 	recipe_entry = models.ForeignKey(BoilRecipeEntry)
+	amount = models.IntegerField(u'scale adjusted amount in grams', default=0)
 	alpha = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 
 	def __str__(self):
@@ -230,6 +238,18 @@ class BoilSessionEntry(models.Model):
 	# Needed to serialize relations properly
 	class JSONAPIMeta:
 		resource_name = "boil_session_entries"
+
+class MashSessionEntry(models.Model):
+	session = models.ForeignKey(BrewingSession, related_name='mash_entries')
+	recipe_entry = models.ForeignKey(MashRecipeEntry)
+	weight = models.DecimalField(u'amount of malt in kg', max_digits=5, decimal_places=2, default=0)
+
+	def __str__(self):
+		return u'Session Entry: %s, %s' % (self.session.recipe.beer.name, self.recipe_entry.ingredient.name)
+
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "mash_session_entries"
 
 class NewsItem(models.Model):
 	title = models.CharField(max_length=100)
