@@ -33,6 +33,10 @@ class BoilIngredient(models.Model):
 	def __str__(self):
 		return u'%s, %f.2%%' % (self.name, self.alpha)
 
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "boil_ingredients"
+
 class MashIngredientType(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)
