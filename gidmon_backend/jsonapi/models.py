@@ -153,6 +153,17 @@ class Recipe(models.Model):
 	class JSONAPIMeta:
 		resource_name = "recipes"
 
+class RecipeCreator(models.Model):
+	creator = models.ForeignKey(User)
+	recipe = models.ForeignKey(Recipe, related_name='creators')
+
+	def __str__(self):
+		return '%s: %s' % (self.recipe, self.creator)
+
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "recipe_creators"
+
 class BrewingSession(models.Model):
 	date = models.DateTimeField();
 	recipe = models.ForeignKey(Recipe, related_name='sessions')
@@ -182,6 +193,17 @@ class BrewingSession(models.Model):
 	# Needed to serialize relations properly
 	class JSONAPIMeta:
 		resource_name = "brewing_sessions"
+
+class SessionBrewer(models.Model):
+	brewer = models.ForeignKey(User)
+	session = models.ForeignKey(BrewingSession, related_name='brewers')
+
+	def __str__(self):
+		return '%s: %s' % (self.session, self.brewer)
+
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "session_brewers"
 
 class BrewingSessionComment(models.Model):
 	brewing_session = models.ForeignKey(BrewingSession, related_name='comments')

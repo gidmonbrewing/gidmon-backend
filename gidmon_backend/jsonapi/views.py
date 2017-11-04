@@ -116,9 +116,21 @@ class RecipeViewSet(viewsets.ModelViewSet):
 	queryset = models.Recipe.objects.all()
 	serializer_class = serializers.RecipeSerializer
 
+class RecipeCreatorViewSet(viewsets.ModelViewSet):
+	queryset = models.RecipeCreator.objects.all()
+	serializer_class = serializers.RecipeCreatorSerializer
+
 class BrewingSessionViewSet(viewsets.ModelViewSet):
 	queryset = models.BrewingSession.objects.all()
 	serializer_class = serializers.BrewingSessionSerializer
+
+class SessionBrewerViewSet(viewsets.ModelViewSet):
+	queryset = models.SessionBrewer.objects.all()
+	serializer_class = serializers.SessionBrewerSerializer
+
+	def perform_create(self, serializer):
+		brewer = self.request.data['brewer']
+		serializer.save(brewer_id = brewer['id']);
 
 class BrewingSessionCommentViewSet(viewsets.ModelViewSet):
 	queryset = models.BrewingSessionComment.objects.all()
