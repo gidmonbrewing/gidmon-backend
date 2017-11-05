@@ -80,7 +80,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 		model = models.Recipe
 		resource_name = "recipes"
 		fields = ('beer', 'creator', 'mashing_temp', 'mashing_time', 'mash_out_temp', 'mash_out_time', 'sparge_count', 'sparge_water_temp', 'sparge_time',
-			'conversion_efficiency', 'pre_boil_volume', 'post_boil_volume', 'fermentation_volume', 'boil_time', 'total_malt_weight', 'primary_fermentation_temp', 
+			'conversion_efficiency', 'pre_boil_volume', 'post_boil_volume', 'fermentation_volume', 'final_volume', 'boil_time', 'total_malt_weight', 'primary_fermentation_temp', 
 			'primary_fermentation_time', 'yeast', 'yeast_amount', 'pitch_type',
 			'boil_entries', 'mash_entries', 'sessions', 'creators')
 		read_only_fields = ('beer', 'creator', 'boil_entries', 'mash_entries', 'sessions', 'creators')
@@ -107,7 +107,7 @@ class BrewingSessionSerializer(serializers.ModelSerializer):
 		model = models.BrewingSession
 		resource_name = "brewing_sessions"
 		fields = ('date', 'recipe', 'brewing_system', 'strike_water_volume', 'strike_water_temp', 'sparge_water_volume', 'sparge_water_temp', 'pre_boil_volume', 
-		'measured_pre_boil_volume', 'post_boil_volume', 'measured_post_boil_volume', 'fermentation_volume', 'measured_fermentation_volume', 'boil_time', 'measured_first_wort_sg', 
+		'measured_pre_boil_volume', 'post_boil_volume', 'measured_post_boil_volume', 'fermentation_volume', 'measured_fermentation_volume', 'final_volume', 'measured_final_volume', 'boil_time', 'measured_first_wort_sg', 
 		'measured_first_sparge_sg', 'measured_pre_boil_sg', 'measured_og', 'measured_fg', 'wort_settle_time', 'yeast_used', 'boil_entries', 'mash_entries', 'comments', 'brewers')
 		read_only_fields = ('boil_entries', 'mash_entries', 'comments', 'brewers')
 
