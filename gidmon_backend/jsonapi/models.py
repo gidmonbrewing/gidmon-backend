@@ -150,6 +150,11 @@ class Recipe(models.Model):
 	def __str__(self):
 		return 'Recipe: %s' % self.beer.name
 
+	class Meta:
+		permissions = (
+			("view_recipe", "Can view recipe"),
+		)
+
 	# Needed to serialize relations properly
 	class JSONAPIMeta:
 		resource_name = "recipes"
@@ -192,6 +197,11 @@ class BrewingSession(models.Model):
 
 	def __str__(self):
 		return 'Session: %s %s' % (self.recipe.beer.name, self.date)
+
+	class Meta:
+		permissions = (
+			("view_brewingsession", "Can view brewing session"),
+		)
 
 	# Needed to serialize relations properly
 	class JSONAPIMeta:

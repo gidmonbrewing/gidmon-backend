@@ -44,6 +44,9 @@
     <Compile Include="gidmon_backend\jsonapi\migrations\0010_beer_description.py" />
     <Compile Include="gidmon_backend\jsonapi\migrations\__init__.py" />
     <Compile Include="gidmon_backend\jsonapi\models.py" />
+    <Compile Include="gidmon_backend\jsonapi\permissions.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="gidmon_backend\jsonapi\serializers.py" />
     <Compile Include="gidmon_backend\jsonapi\tests.py" />
     <Compile Include="gidmon_backend\jsonapi\views.py" />

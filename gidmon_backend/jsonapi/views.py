@@ -1,15 +1,18 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from django.utils import timezone
-from rest_framework import viewsets, views
+from rest_framework import parsers, status, viewsets, views
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.decorators import detail_route
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly, DjangoModelPermissions
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.settings import api_settings
 from gidmon_backend.jsonapi import serializers
 from gidmon_backend.jsonapi import models
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework import status
-from rest_framework.settings import api_settings
-from rest_framework.decorators import detail_route
-from rest_framework.authtoken.models import Token
+from gidmon_backend.jsonapi.permissions import ExtendedDjangoModelPermissions
 import os
 import time
 
@@ -27,6 +30,13 @@ class GroupViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Group.objects.all()
 	serializer_class = serializers.GroupSerializer
+
+class PermissionViewSet(viewsets.ModelViewSet):
+	"""
+	API endpoint that allows permissions to be viewed or edited.
+	"""
+	queryset = Permission.objects.all()
+	serializer_class = serializers.PermissionSerializer
 
 class ProfileViewSet(viewsets.ModelViewSet):
 	queryset = models.Profile.objects.all()
@@ -59,6 +69,23 @@ class ProfileViewSet(viewsets.ModelViewSet):
 			return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 		else:
 			return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class ObtainAuthToken(views.APIView):
+	throttle_classes = ()
+	permission_classes = ()
+	parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
+	renderer_classes = (JSONRenderer,)
+	serializer_class = AuthTokenSerializer
+
+	def post(self, request, *args, **kwargs):
+		serializer = self.serializer_class(data=request.data, context={'request': request})
+		serializer.is_valid(raise_exception=True)
+		user = serializer.validated_data['user']
+		token, created = Token.objects.get_or_create(user=user)
+		return Response({'token': token.key, 'userId': user.id})
+
+
+obtain_auth_token = ObtainAuthToken.as_view()
 
 class OAuthLoginFB(views.APIView):
 	throttle_classes = ()
@@ -113,6 +140,7 @@ class PitchTypeViewSet(viewsets.ModelViewSet):
 	serializer_class = serializers.PitchTypeSerializer
 
 class RecipeViewSet(viewsets.ModelViewSet):
+	permission_classes = (ExtendedDjangoModelPermissions,)
 	queryset = models.Recipe.objects.all()
 	serializer_class = serializers.RecipeSerializer
 
@@ -121,6 +149,7 @@ class RecipeCreatorViewSet(viewsets.ModelViewSet):
 	serializer_class = serializers.RecipeCreatorSerializer
 
 class BrewingSessionViewSet(viewsets.ModelViewSet):
+	permission_classes = (ExtendedDjangoModelPermissions,)
 	queryset = models.BrewingSession.objects.all()
 	serializer_class = serializers.BrewingSessionSerializer
 

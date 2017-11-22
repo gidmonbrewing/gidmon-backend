@@ -17,13 +17,13 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
 from gidmon_backend.jsonapi import views
-from rest_framework.authtoken.views import obtain_auth_token
 from django.conf.urls.static import static
 from django.conf import settings
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'permissions', views.PermissionViewSet)
 router.register(r'beers', views.BeerViewSet)
 router.register(r'recipes', views.RecipeViewSet)
 router.register(r'recipe_creators', views.RecipeCreatorViewSet)
@@ -45,7 +45,7 @@ router.register(r'boil_session_entries', views.BoilSessionEntryViewSet)
 router.register(r'mash_session_entries', views.MashSessionEntryViewSet)
 
 urlpatterns = [
-	url(r'^api/token-auth', obtain_auth_token),
+	url(r'^api/token-auth', views.obtain_auth_token),
 	url(r'^api/oauth-login-fb', views.oauth_login_fb),
 	url(r'^api/', include(router.urls)),
 	url(r'^admin/', admin.site.urls),

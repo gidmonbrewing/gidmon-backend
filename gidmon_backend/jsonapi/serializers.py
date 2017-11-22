@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from rest_framework_json_api import serializers
 #from rest_framework_json_api import serializers
 from gidmon_backend.jsonapi import models
@@ -7,14 +7,20 @@ class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
 		resource_name = "user"
-		fields = ('url', 'username', 'first_name', 'last_name', 'email', 'groups', 'is_staff', 'is_superuser', 'profile')
-		read_only_fields = ('profile',)
+		fields = ('url', 'first_name', 'last_name', 'email', 'groups', 'is_staff', 'is_superuser', 'user_permissions', 'profile')
+		read_only_fields = ('user_permissions', 'profile',)
 
 class GroupSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Group
 		resource_name = "group"
 		fields = ('url', 'name')
+
+class PermissionSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Permission
+		resource_name = "permission"
+		fields = ('name', 'codename')
 
 class ProfileSerializer(serializers.ModelSerializer):
 	class Meta:
