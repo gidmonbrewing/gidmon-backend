@@ -194,6 +194,7 @@ class BrewingSession(models.Model):
 	measured_fg = models.DecimalField(u"measured fg", max_digits=4, decimal_places=3, default=1.000)
 	wort_settle_time = models.IntegerField(u"time to let the sediment settle in the wort", default=0)
 	yeast_used = models.DecimalField(u"amount of yeast used", max_digits=4, decimal_places=2, default=0)
+	sugar_used = models.IntegerField(u"amount of sugar used (g)", default=0)
 
 	def __str__(self):
 		return 'Session: %s %s' % (self.recipe.beer.name, self.date)
