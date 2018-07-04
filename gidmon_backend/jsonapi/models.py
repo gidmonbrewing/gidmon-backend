@@ -100,6 +100,10 @@ class BeerType(models.Model):
 	def __str__(self):
 		return self.name
 
+	# Needed to serialize relations properly
+	class JSONAPIMeta:
+		resource_name = "beer_types"
+
 class Beer(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(blank=True, null=True)

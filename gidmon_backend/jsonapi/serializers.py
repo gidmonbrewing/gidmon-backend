@@ -89,7 +89,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 			'conversion_efficiency', 'pre_boil_volume', 'post_boil_volume', 'fermentation_volume', 'final_volume', 'boil_time', 'total_malt_weight', 'primary_fermentation_temp', 
 			'primary_fermentation_time', 'yeast', 'yeast_amount', 'pitch_type',
 			'boil_entries', 'mash_entries', 'sessions', 'creators')
-		read_only_fields = ('beer', 'creator', 'boil_entries', 'mash_entries', 'sessions', 'creators')
+		read_only_fields = ('creator', 'boil_entries', 'mash_entries', 'sessions', 'creators')
 
 class RecipeCreatorSerializer(serializers.ModelSerializer):
 	class Meta:

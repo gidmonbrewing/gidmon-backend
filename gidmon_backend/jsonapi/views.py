@@ -15,6 +15,8 @@ from gidmon_backend.jsonapi import models
 from gidmon_backend.jsonapi.permissions import ExtendedDjangoModelPermissions
 import os
 import time
+import urllib.request
+import json
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -92,8 +94,16 @@ class OAuthLoginFB(views.APIView):
 	permission_classes = ()
 
 	def post(self, request, *args, **kwargs):
-		username = "fb_" + request.data['username']
+		userId = request.data['username']
+		username = "fb_" + userId
 		email = request.data['email']
+		try:
+			content = urllib.request.urlopen("https://graph.facebook.com/v3.0/me?fields=id,email&access_token=" + request.data['accessToken']).read()
+			me = json.loads(content)
+			if not me["id"] == userId:
+				return Response({'details': 'Invalid Access Token'}, status=status.HTTP_401_UNAUTHORIZED)
+		except:
+			return Response({'details': 'Failed to validate token'}, status=status.HTTP_401_UNAUTHORIZED)
 		try:
 			user = User.objects.get(username = username, email = email)
 			user.last_login = timezone.now()
@@ -143,6 +153,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 	permission_classes = (ExtendedDjangoModelPermissions,)
 	queryset = models.Recipe.objects.all()
 	serializer_class = serializers.RecipeSerializer
+
+	def perform_create(self, serializer):
+		serializer.save(creator=self.request.user)
 
 class RecipeCreatorViewSet(viewsets.ModelViewSet):
 	queryset = models.RecipeCreator.objects.all()
