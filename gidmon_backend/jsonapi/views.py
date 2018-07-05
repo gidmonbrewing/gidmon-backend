@@ -100,10 +100,10 @@ class OAuthLoginFB(views.APIView):
 		try:
 			content = urllib.request.urlopen("https://graph.facebook.com/v3.0/me?fields=id,email&access_token=" + request.data['accessToken']).read()
 			me = json.loads(content)
-			if not me["id"] == userId:
+			if me["id"] != userId:
 				return Response({'details': 'Invalid Access Token'}, status=status.HTTP_401_UNAUTHORIZED)
-		except:
-			return Response({'details': 'Failed to validate token'}, status=status.HTTP_401_UNAUTHORIZED)
+		except Exception as e:
+			return Response({'details': e}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 		try:
 			user = User.objects.get(username = username, email = email)
 			user.last_login = timezone.now()
